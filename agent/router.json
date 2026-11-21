@@ -1,0 +1,15 @@
+{
+  "LOG": false,
+  "HOST": "127.0.0.1",
+  "PORT": 3456,
+  "APIKEY": "local",
+  "Providers": [
+    {
+      "name": "kilo",
+      "api_base_url": "https://api.kilo.ai/api/gateway/chat/completions",
+      "api_key": "anonymous",
+      "models": ["kilo-auto/free"]
+    }
+  ],
+  "Router": { "default": "kilo,kilo-auto/free" }
+}
