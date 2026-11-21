@@ -1,5 +1,6 @@
 {
   "name": "Claude Code Cloud",
+  "features": { "ghcr.io/devcontainers/features/sshd:1": {} },
   "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
   "remoteEnv": { "RELAY_URL": "wss://claude-code-cloud.mhamra148.workers.dev/agent" },
   "postCreateCommand": "npm i -g @anthropic-ai/claude-code @musistudio/claude-code-router && (cd agent && npm i) && mkdir -p ~/.claude-code-router && cp agent/router.json ~/.claude-code-router/config.json",

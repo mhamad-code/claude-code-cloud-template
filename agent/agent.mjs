@@ -1,10 +1,11 @@
 // Runs inside the Codespace: connects OUT to the relay, runs Claude Code headless, streams events back.
+console.log("agent boot", process.env.RELAY_URL, process.env.GITHUB_USER, !!process.env.GITHUB_TOKEN, !!process.env.CODESPACE_NAME);
 import WebSocket from 'ws';
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
-const RELAY = process.env.RELAY_URL;
+const RELAY = process.env.RELAY_URL || 'wss://claude-code-cloud.mhamra148.workers.dev/agent';
 const WORK = path.resolve('projects');
 fs.mkdirSync(WORK, { recursive: true });
 let sessionId = null, proc = null, reported = false;
@@ -73,7 +74,7 @@ function connect() {
     if (m.t === 'msg' && typeof m.text === 'string') run(m.text, send);
     else if (m.t === 'stop' && proc) proc.kill();
   });
-  ws.on('close', () => { clearInterval(ka); setTimeout(connect, 3000); });
-  ws.on('error', () => {});
+  ws.on('close', (c, r) => { console.log('closed', c, String(r)); clearInterval(ka); setTimeout(connect, 3000); });
+  ws.on('error', (e) => console.log('ws error:', e.message));
 }
 connect();
